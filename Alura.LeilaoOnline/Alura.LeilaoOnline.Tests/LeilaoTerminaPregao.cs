@@ -15,7 +15,8 @@ namespace Alura.LeilaoOnline.Tests
         {
             var leilao = new Leilao("Van Gogh");
             var max = new Interessada("Max", leilao);
-           
+
+            leilao.IniciaPregao();           
             foreach(var valor in ofertas)
             {
                 leilao.RecebeLance(max, valor);

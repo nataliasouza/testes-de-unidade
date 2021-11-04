@@ -53,7 +53,7 @@ namespace Alura.LeilaoOnline.ConsoleApp
             leilao.TerminaPregao();
 
             //Assert
-            var valorEsperado = 700;
+            var valorEsperado = 800;
             var valorObtido = leilao.Ganhador.Valor;
             Verifica(valorEsperado, valorObtido);
         }
