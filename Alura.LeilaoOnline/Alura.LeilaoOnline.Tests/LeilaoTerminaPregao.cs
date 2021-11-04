@@ -13,17 +13,28 @@ namespace Alura.LeilaoOnline.Tests
             double valorEsperado,
             double[]ofertas)
         {
+            //Arrange 
             var leilao = new Leilao("Van Gogh");
-            var max = new Interessada("Max", leilao);
+            var teddy = new Interessada("Teddy", leilao);
+            var mallu = new Interessada("Mallu", leilao);
+            leilao.IniciaPregao();
 
-            leilao.IniciaPregao();           
-            foreach(var valor in ofertas)
+            for (int i = 0; i < ofertas.Length; i++)
             {
-                leilao.RecebeLance(max, valor);
+                var valor = ofertas[i];
+                if ((i % 2) == 0)
+                {
+                    leilao.RecebeLance(teddy, valor);
+                }
+                else
+                {
+                    leilao.RecebeLance(mallu, valor);
+                }
             }
-
+            //Act - método sob teste
             leilao.TerminaPregao();
-         
+
+            //Assert         
             var valorObtido = leilao.Ganhador.Valor;
             Assert.Equal(valorEsperado, valorObtido);
         }
@@ -31,10 +42,13 @@ namespace Alura.LeilaoOnline.Tests
         [Fact]
         public void RetornarZeroDadoLeilaoSemLances()
         {
-            var leilao = new Leilao("Van Gogh");                
+            //Arrange 
+            var leilao = new Leilao("Van Gogh");
 
+            //Act - método sob teste
             leilao.TerminaPregao();
 
+            //Assert      
             var valorEsperado = 0;
             var valorObtido = leilao.Ganhador.Valor;
 
