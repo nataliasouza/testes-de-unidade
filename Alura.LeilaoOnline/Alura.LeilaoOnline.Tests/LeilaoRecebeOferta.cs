@@ -1,8 +1,5 @@
 ﻿using Alura.LeilaoOnline.Core;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace Alura.LeilaoOnline.Tests
@@ -13,7 +10,8 @@ namespace Alura.LeilaoOnline.Tests
         public void NaoAceitaProximoLanceDadoMesmoClienteRealizouUltimoLance()
         {
             //Arrange 
-            var leilao = new Leilao("Van Gogh");
+            var modalidade = new MaiorValor();
+            var leilao = new Leilao("Van Gogh", modalidade);
             var teddy = new Interessada("Teddy", leilao);            
 
             leilao.IniciaPregao();
@@ -33,7 +31,8 @@ namespace Alura.LeilaoOnline.Tests
         [InlineData(2, new double[] { 800, 900 })]
         public void NaoPermiteNovosLancesDadoLeilaoFinalizado(int qtdeEsperada, double[] ofertas)
         {
-            var leilao = new Leilao("Van Gogh");
+            var modalidade = new MaiorValor();
+            var leilao = new Leilao("Van Gogh", modalidade);
             var teddy = new Interessada("Teddy", leilao);
             var mallu = new Interessada("Mallu", leilao);
             

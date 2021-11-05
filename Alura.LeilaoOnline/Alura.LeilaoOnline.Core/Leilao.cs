@@ -13,18 +13,18 @@ namespace Alura.LeilaoOnline.Core
     {
         private Interessada _ultimoCliente;
         private IList<Lance> _lances;
+        private IModalidadeAvaliacao _avaliador;
         public IEnumerable<Lance> Lances => _lances;
         public string Peca { get; }
         public Lance Ganhador{get; private set;}
-        public EstadoLeilao Estado { get; private set; }
-        public double ValorDestino { get; }
+        public EstadoLeilao Estado { get; private set; }        
 
-        public Leilao(string peca, double valorDestino = 0)
+        public Leilao(string peca, IModalidadeAvaliacao avaliador)
         {
             Peca = peca;
             _lances = new List<Lance>();
             Estado = EstadoLeilao.LeilaoAntesDoPregao;
-            ValorDestino = valorDestino;
+            _avaliador = avaliador;
         }
         private bool NovoLanceAceito(Interessada cliente, double valor)
         {
@@ -51,22 +51,7 @@ namespace Alura.LeilaoOnline.Core
             {
                 throw new System.InvalidOperationException("Não é possível terminar o pregão, sem que ele tem sido iniciado!");
             }
-            if(ValorDestino > 0)
-            {
-                //modalidade oferta superior mais próxima
-                Ganhador = Lances
-                    .DefaultIfEmpty(new Lance(null, 0))
-                    .Where(l => l.Valor > ValorDestino)
-                    .OrderBy(l => l.Valor)
-                    .FirstOrDefault();
-            } else
-            {
-                //modalidade maior valor
-                Ganhador = Lances
-                .DefaultIfEmpty(new Lance(null, 0))
-                .OrderBy(l => l.Valor)
-                .LastOrDefault();
-            }            
+            Ganhador = _avaliador.Avalia(this);
             Estado = EstadoLeilao.LeilaoFinalizado;
         }
     }
